@@ -1,0 +1,33 @@
+from tryy2 import criarBoard,printBoard,getInputValido,verificaMovimento,fazMovimento,verificarGanhador
+from Minimax import movimentoIA
+
+board = criarBoard()
+jogador = 0
+ganhador =  verificarGanhador(board)
+while not ganhador:
+    printBoard(board)
+    if jogador == 0:
+        i,j = movimentoIA(board,jogador)
+    else:
+        i = getInputValido('Digite a linha:')
+        j = getInputValido('Digite a coluna:')
+    print()
+
+    if verificaMovimento(board,i,j):
+        fazMovimento(board,i,j,jogador)
+        jogador = (jogador + 1)%2 # vai ficar trocando entre 0 e 1,começa em 0,0 e par resto 1,1 e impar resto 1...
+    else:
+        print('Jogada invalida')
+
+    ganhador = verificarGanhador(board)
+
+print('==================')
+for k in range (3):
+    for f in range (3):
+        if board[i][j] == ' ':
+            board[i][j] == ganhador
+for l in board:
+    for e in l:
+        print(e,end= ' ')
+    print()
+print('O ganhador é:',ganhador)
