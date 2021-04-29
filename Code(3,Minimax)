@@ -1,0 +1,71 @@
+from tryy2 import blank,token,verificarGanhador
+
+
+
+def movimentoIA(board,jogador):
+    posb = getposicoes(board)
+    melhor_val = None
+    melhor_mov = None
+    for p in posb:
+        board[p[0]][p[1]] = token[jogador]
+        valor = minimax(board,jogador)
+        board[p[0]][p[1]] = blank
+
+        if melhor_val is None:
+            melhor_val = valor
+            melhor_mov = p
+
+        elif jogador == 0:
+            if valor > melhor_val:
+                melhor_val = valor
+                melhor_mov = p
+
+        elif jogador == 1:
+            if valor < melhor_val:
+                melhor_val = valor
+                melhor_mov = p
+
+
+    print('Chance de vitoria:',melhor_val*100,'%')
+    return melhor_mov[0],melhor_mov[1]
+
+def getposicoes(board):
+    posicoes = []
+    for i in range (3):
+        for j in range (3):
+            if board[i][j] == blank:
+                posicoes.append([i,j])
+    return posicoes
+
+score = {
+    'EMPATE':0,
+    'X': 1,
+    'O': -1
+}
+
+def minimax(board,jogador):
+    ganhador = verificarGanhador(board)
+    if ganhador:
+        return score[ganhador]
+    jogador = (jogador + 1) % 2  # trocar de player automatically
+    # se n tem resultado tem mais opcoes
+    posb = getposicoes(board)
+    melhor_val = None
+    for p in posb:
+        board[p[0]][p[1]] = token[jogador]
+        valor = minimax(board,jogador)
+        board[p[0]][p[1]] = blank
+
+        if melhor_val is None:
+            melhor_val = valor
+
+        elif jogador == 0:
+            if valor > melhor_val:
+                melhor_val = valor
+
+        elif jogador == 1:
+            if valor > melhor_val:
+                melhor_val = valor
+
+
+    return melhor_val
